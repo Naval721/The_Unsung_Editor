@@ -9,7 +9,6 @@
     "build:dev": "vite build --mode development",
     "build:prod": "vite build --mode production",
     "preview": "vite preview",
-    "preview:prod": "vite preview --mode production",
     "lint": "eslint .",
     "clean": "rm -rf dist",
     "deploy": "npm run clean && npm run build:prod"
@@ -67,6 +66,7 @@
   },
   "devDependencies": {
     "@eslint/js": "^9.9.0",
+    "@rollup/rollup-linux-x64-gnu": "^4.48.1",
     "@tailwindcss/typography": "^0.5.15",
     "@types/node": "^22.5.5",
     "@types/react": "^18.3.3",
@@ -79,9 +79,12 @@
     "globals": "^15.9.0",
     "postcss": "^8.5.6",
     "tailwindcss": "^3.4.17",
-    "terser": "^5.43.1",
     "typescript": "^5.5.3",
     "typescript-eslint": "^8.0.1",
     "vite": "^5.4.1"
+  },
+  "engines": {
+    "node": ">=18.0.0",
+    "npm": ">=8.0.0"
   }
 }

@@ -5,13 +5,13 @@ This project is now fully configured for production deployment with optimized bu
 
 ## Quick Deploy
 
-### Option 1: Automated Deployment Script
+### Option 1: Automated Build Script
 ```bash
-./deploy.sh
+./build.sh
 ```
 This script will:
 - Clean previous builds
-- Install dependencies
+- Install dependencies (if needed)
 - Build for production
 - Provide deployment instructions
 
@@ -19,15 +19,20 @@ This script will:
 ```bash
 npm run deploy
 # or
-npm run clean && npm run build:prod
+npm run clean && npm run build
 ```
 
 ## Deployment Platforms
 
 ### Vercel (Recommended)
-1. Install Vercel CLI: `npm i -g vercel`
-2. Run: `vercel --prod`
-3. Follow the prompts to configure your project
+1. **Automatic Deployment**: Connect your GitHub repository to Vercel
+2. **Build Command**: The project automatically uses `npm run build`
+3. **Output Directory**: `dist`
+4. **Node Version**: 18.x (automatically detected)
+
+**Vercel Configuration**: The project includes `vercel.json` with proper routing.
+
+**Important**: The project includes the necessary Linux-specific rollup dependencies for Vercel deployment.
 
 ### Netlify
 1. Install Netlify CLI: `npm i -g netlify-cli`
@@ -35,7 +40,7 @@ npm run clean && npm run build:prod
 3. Follow the prompts to configure your project
 
 ### Manual Deployment
-1. Build: `npm run build:prod`
+1. Build: `npm run build`
 2. Upload the `dist` folder to your hosting provider
 3. Configure your server to serve `index.html` for all routes (SPA routing)
 
@@ -43,27 +48,15 @@ npm run clean && npm run build:prod
 
 ### Build Optimizations
 - Code splitting for better performance
-- Terser minification
 - Optimized asset handling
-- Proper caching headers
-
-### Security
-- Security headers configured
-- XSS protection
-- Content type protection
-- Frame protection
+- Proper routing configuration
 
 ### Performance
-- Static asset caching
+- Static asset optimization
 - Optimized bundle sizes
 - Tree shaking enabled
 
 ## Environment Configuration
-
-### Production Environment
-- `VITE_APP_TITLE`: Application title
-- `VITE_APP_DESCRIPTION`: Application description
-- `VITE_APP_BASE_URL`: Base URL for routing
 
 ### Build Modes
 - `development`: Development build with source maps
@@ -72,14 +65,19 @@ npm run clean && npm run build:prod
 ## Troubleshooting
 
 ### Common Issues
-1. **Build fails with terser error**: Run `npm install --save-dev terser`
+1. **Build fails with rollup error**: Run `npm install --save-dev @rollup/rollup-linux-x64-gnu`
 2. **Dependencies not found**: Run `npm install` to reinstall
 3. **Build cache issues**: Run `npm run clean` before building
+
+### Vercel-Specific Issues
+1. **Rollup dependency errors**: The project includes `@rollup/rollup-linux-x64-gnu` for Linux environments
+2. **Build command not found**: Ensure `npm run build` is available
+3. **Platform-specific packages**: Automatically handled by included dependencies
 
 ### Performance Issues
 1. Check bundle sizes in build output
 2. Verify code splitting is working
-3. Ensure proper caching headers
+3. Ensure proper routing configuration
 
 ## Support
 For deployment issues, refer to:
