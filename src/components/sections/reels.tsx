@@ -115,6 +115,34 @@ export function ReelsSection() {
         ref.pause()
       }
     })
+
+    // Smooth scroll to main video and start playing
+    if (mainVideoRef) {
+      mainVideoRef.scrollIntoView({ behavior: 'smooth', block: 'center', inline: 'nearest' })
+      // Attempt to play after selection within the same user gesture
+      const playPromise = mainVideoRef.play()
+      if (playPromise !== undefined) {
+        playPromise.catch(() => {
+          // Auto-play may be blocked; ensure paused state is reflected
+          setIsPlaying(false)
+        })
+      } else {
+        setIsPlaying(true)
+      }
+    } else {
+      // Fallback: try shortly after ref attaches
+      setTimeout(() => {
+        if (mainVideoRef) {
+          mainVideoRef.scrollIntoView({ behavior: 'smooth', block: 'center', inline: 'nearest' })
+          const playPromise = mainVideoRef.play()
+          if (playPromise !== undefined) {
+            playPromise.catch(() => setIsPlaying(false))
+          } else {
+            setIsPlaying(true)
+          }
+        }
+      }, 50)
+    }
   }
 
   const handleMainVideoClick = () => {
@@ -239,7 +267,7 @@ export function ReelsSection() {
                 transitionDelay: `${index * 150}ms`,
                 transform: `translateY(${isVisible ? 0 : 20}px)`
               }}
-              onClick={() => setSelectedReel(reel)}
+              onClick={() => handleReelSelect(reel)}
             >
               <div className="relative aspect-video overflow-hidden">
                 <video
@@ -261,17 +289,14 @@ export function ReelsSection() {
           ))}
         </div>
 
-        {/* Watch Our Showreel Button */}
-        <div className={`text-center transition-all duration-1000 ease-premium ${
-          isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
-        }`}
-        style={{ transitionDelay: '800ms' }}>
+        {/* CTA Section */}
+        <div className={`text-center ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'} transition-all duration-1000 ease-premium`}>
           <Button 
             onClick={scrollToShowcase}
-            className="bg-gradient-primary hover:bg-gradient-primary/90 text-white px-8 py-4 text-lg font-semibold rounded-full transition-all duration-300 hover:scale-105 hover:shadow-2xl group"
+            className="inline-flex items-center gap-2 bg-gradient-primary text-primary-foreground hover:opacity-90 transition-opacity"
           >
-            Watch Our Showreel
-            <ArrowRight className="h-5 w-5 ml-2 group-hover:translate-x-1 transition-transform duration-300" />
+            Explore Full Showcase
+            <ArrowRight className="h-4 w-4" />
           </Button>
         </div>
       </div>
