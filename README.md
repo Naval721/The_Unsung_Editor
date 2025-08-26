@@ -1,4 +1,4 @@
-# Welcome to your Gx Creator project
+# Narrative Motion Design - Gx Creator Project
 
 ## Project info
 
@@ -62,7 +62,36 @@ This project is built with:
 
 ## How can I deploy this project?
 
+### Option 1: Gx Creator (Recommended)
 Simply open [Gx Creator](https://gxcreator.dev/projects/aad5aab2-7873-4405-a643-58920bf087e3) and click on Share -> Publish.
+
+### Option 2: Manual Deployment
+
+#### Build for Production
+```sh
+npm run build:prod
+```
+
+#### Deploy to Vercel
+1. Install Vercel CLI: `npm i -g vercel`
+2. Run: `vercel --prod`
+
+#### Deploy to Netlify
+1. Install Netlify CLI: `npm i -g netlify-cli`
+2. Run: `netlify deploy --prod`
+
+#### Deploy to any static hosting
+1. Build: `npm run build:prod`
+2. Upload the `dist` folder to your hosting provider
+
+### Available Scripts
+- `npm run dev` - Start development server
+- `npm run build` - Build for development
+- `npm run build:prod` - Build for production
+- `npm run preview` - Preview development build
+- `npm run preview:prod` - Preview production build
+- `npm run deploy` - Clean and build for production
+- `npm run lint` - Run ESLint
 
 ## Can I connect a custom domain to my Gx Creator project?
 
@@ -71,3 +100,10 @@ Yes, you can!
 To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
 
 Read more here: [Setting up a custom domain](https://docs.gxcreator.dev/tips-tricks/custom-domain#step-by-step-guide)
+
+## Production Deployment Notes
+
+- The project is configured for production builds with optimized settings
+- Static assets are properly cached for better performance
+- SPA routing is configured for all hosting platforms
+- Security headers are included for production deployments
