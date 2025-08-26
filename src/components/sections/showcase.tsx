@@ -122,6 +122,27 @@ export function ShowcaseSection() {
         }, 200)
       }, 150)
     }
+
+    // Attempt to auto-play the main video after selection
+    const tryPlay = () => {
+      const mobileVideo = mobileVideoRef.current
+      const desktopVideo = desktopVideoRef.current
+      const activeVideo = window.innerWidth < 640 ? mobileVideo : desktopVideo
+      if (activeVideo) {
+        const playPromise = activeVideo.play()
+        if (playPromise !== undefined) {
+          playPromise
+            .then(() => setIsPlaying(true))
+            .catch(() => setIsPlaying(false)) // autoplay may be blocked
+        } else {
+          setIsPlaying(true)
+        }
+      }
+    }
+
+    // Try immediately in the same gesture, then retry shortly after render
+    tryPlay()
+    setTimeout(tryPlay, 100)
   }
 
   // Sync selectedProject with currentProjectIndex for desktop
