@@ -1,36 +1,46 @@
-import { useEffect, useRef, useState, useCallback } from 'react'
+import { useEffect, useRef, useState } from 'react'
 
-export function useScrollReveal(threshold = 0.1, once = true) {
+export function useScrollReveal(
+  threshold = 0.1,
+  once = true,
+  rootMargin: string = '0px 0px -10% 0px'
+) {
   const [isVisible, setIsVisible] = useState(false)
   const ref = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
+    const element = ref.current
+    if (!element) return
+
+    // Respect user motion preferences
+    const mediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)')
+    if (mediaQuery.matches) {
+      setIsVisible(true)
+      return
+    }
+
+    const thresholds = Array.isArray(threshold)
+      ? (threshold as unknown as number[])
+      : Array.from({ length: 6 }, (_, i) => Math.min(1, i * Math.max(0.01, threshold)))
+
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
           setIsVisible(true)
-          // Once visible, disconnect the observer if once is true
-          if (once) {
-            observer.disconnect()
-          }
+          if (once) observer.unobserve(entry.target)
         } else if (!once) {
           setIsVisible(false)
         }
       },
       {
-        threshold,
-        rootMargin: '0px 0px -50px 0px' // Trigger slightly before element is fully visible
+        threshold: thresholds,
+        rootMargin
       }
     )
 
-    if (ref.current) {
-      observer.observe(ref.current)
-    }
-
-    return () => {
-      observer.disconnect()
-    }
-  }, [threshold, once])
+    observer.observe(element)
+    return () => observer.disconnect()
+  }, [threshold, once, rootMargin])
 
   return [ref, isVisible] as const
 }
@@ -53,7 +63,6 @@ export function useParallax(speed = 0.5) {
           const elementHeight = element.offsetHeight
           const windowHeight = window.innerHeight
 
-          // Calculate if element is in viewport with buffer
           if (scrolled + windowHeight > elementTop - 100 && scrolled < elementTop + elementHeight + 100) {
             const yPos = -(scrolled - elementTop) * speed
             element.style.transform = `translate3d(0, ${yPos}px, 0)`
@@ -161,7 +170,6 @@ export function useTextReveal() {
   return [ref, isRevealed] as const
 }
 
-// New hook for smooth scroll progress tracking
 export function useScrollProgress() {
   const [scrollProgress, setScrollProgress] = useState(0)
 
@@ -182,7 +190,7 @@ export function useScrollProgress() {
     }
 
     window.addEventListener('scroll', updateScrollProgress, { passive: true })
-    updateScrollProgress() // Initial call
+    updateScrollProgress()
 
     return () => window.removeEventListener('scroll', updateScrollProgress)
   }, [])
@@ -190,7 +198,6 @@ export function useScrollProgress() {
   return scrollProgress
 }
 
-// New hook for element visibility with intersection ratio
 export function useIntersectionRatio(threshold = 0.1) {
   const ref = useRef<HTMLElement>(null)
   const [ratio, setRatio] = useState(0)
@@ -217,7 +224,6 @@ export function useIntersectionRatio(threshold = 0.1) {
   return [ref, ratio, isVisible] as const
 }
 
-// New hook for responsive breakpoint detection
 export function useBreakpoint() {
   const [breakpoint, setBreakpoint] = useState<'mobile' | 'tablet' | 'desktop'>('desktop')
 

@@ -45,9 +45,9 @@ const stats = [
 
 export function AboutSection() {
   const [currentTestimonial, setCurrentTestimonial] = useState(0)
-  const [titleRef, titleVisible] = useScrollReveal(0.3)
-  const [statsRef, statsVisible] = useScrollReveal(0.3)
-  const [testimonialsRef, testimonialsVisible] = useScrollReveal(0.3)
+  const [titleRef, titleVisible] = useScrollReveal(0.3, false, '-5% 0px -5% 0px')
+  const [statsRef, statsVisible] = useScrollReveal(0.3, false, '-5% 0px -5% 0px')
+  const [testimonialsRef, testimonialsVisible] = useScrollReveal(0.3, false, '-5% 0px -5% 0px')
 
   useEffect(() => {
     const interval = setInterval(() => {
