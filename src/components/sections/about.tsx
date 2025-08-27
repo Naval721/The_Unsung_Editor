@@ -58,7 +58,7 @@ export function AboutSection() {
   }, [])
 
   return (
-    <section id="about" className="py-16 md:py-20 lg:py-24 bg-gradient-subtle w-full">
+    <section id="about" className="relative z-10 py-16 md:py-20 lg:py-24 bg-gradient-subtle w-full">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
         {/* Section Header */}
         <div
@@ -155,7 +155,7 @@ export function AboutSection() {
             <div className="relative aspect-[4/3] rounded-2xl overflow-hidden shadow-elegant">
               <div className="absolute inset-0 bg-gradient-to-br from-accent/20 to-primary/20" />
               <div className="absolute inset-0 flex items-center justify-center text-white">
-                <img src="/dist/The unsung editor.jpg" alt="Team" className="w-full h-full object-cover" />
+                <img src="/The%20unsung%20editor.jpg" alt="Team" className="w-full h-full object-cover" />
               </div>
             </div>
           </div>
